@@ -1,0 +1,9 @@
+[
+  { "name": "extra-bread", "label": "extra bread", "price": "1000" },
+  { "name": "mushroom", "label": "mushroom", "price": "2000" },
+  { "name": "cheese", "label": "cheese", "price": "2500" },
+  { "name": "extra-falafel", "label": "extra falafel", "price": "4100" },
+  { "name": "sauce", "label": "sauce", "price": "6200" },
+  { "name": "drink", "label": "drink", "price": "3100" },
+  { "name": "french-fries", "label": "french fries", "price": null }
+]
