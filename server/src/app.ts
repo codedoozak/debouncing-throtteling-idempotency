@@ -131,6 +131,64 @@ app.get("/api/products", async (req: Request, res: Response) => {
   }
 });
 
+// POST route to demonstrate idempotency
+
+app.post(
+  "/api/wallet-idempotent",
+  async (req: Request, res: Response): Promise<any> => {
+    console.log(req.body);
+
+    const { idempotencyKey, amount } = req.body;
+
+    if (!idempotencyKey) {
+      return res.status(400).json({ message: "Idempotency key is required" });
+    }
+
+    // Check if the key already exists
+    const existingResponse = mockRedis.get(idempotencyKey);
+    if (existingResponse) {
+      return res.status(200).json({
+        message: "Request already processed",
+        data: existingResponse,
+      });
+    }
+
+    // Simulate wallet update operation
+    const response = {
+      transactionId: Math.floor(Math.random() * 1000000),
+      amount,
+      status: "success",
+    };
+
+    // Save the response in the mock Redis store with a TTL (e.g., 30 seconds)
+    mockRedis.set(idempotencyKey, response, 10);
+
+    res.status(201).json({
+      message: "Transaction processed successfully",
+      data: response,
+    });
+  }
+);
+// Mock Redis-like storage with TTL
+const mockRedis = (() => {
+  const store = new Map();
+
+  return {
+    set: (key, value, ttl) => {
+      store.set(key, { value, expiresAt: Date.now() + ttl * 1000 });
+    },
+    get: (key) => {
+      const data = store.get(key);
+      if (data && data.expiresAt > Date.now()) {
+        return data.value;
+      } else {
+        store.delete(key); // Clean up expired key
+        return null;
+      }
+    },
+  };
+})();
+
 // 3. General error handling for invalid routes
 app.use((req: Request, res: Response) => {
   res.status(404).json({ error: "Route not found" });

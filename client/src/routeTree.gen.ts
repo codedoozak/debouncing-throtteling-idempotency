@@ -11,12 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WalletImport } from './routes/wallet'
 import { Route as UsernameImport } from './routes/username'
 import { Route as SandwichImport } from './routes/sandwich'
 import { Route as AnimationImport } from './routes/animation'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const WalletRoute = WalletImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const UsernameRoute = UsernameImport.update({
   id: '/username',
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsernameImport
       parentRoute: typeof rootRoute
     }
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -84,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/animation': typeof AnimationRoute
   '/sandwich': typeof SandwichRoute
   '/username': typeof UsernameRoute
+  '/wallet': typeof WalletRoute
 }
 
 export interface FileRoutesByTo {
@@ -91,6 +106,7 @@ export interface FileRoutesByTo {
   '/animation': typeof AnimationRoute
   '/sandwich': typeof SandwichRoute
   '/username': typeof UsernameRoute
+  '/wallet': typeof WalletRoute
 }
 
 export interface FileRoutesById {
@@ -99,14 +115,15 @@ export interface FileRoutesById {
   '/animation': typeof AnimationRoute
   '/sandwich': typeof SandwichRoute
   '/username': typeof UsernameRoute
+  '/wallet': typeof WalletRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/animation' | '/sandwich' | '/username'
+  fullPaths: '/' | '/animation' | '/sandwich' | '/username' | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/animation' | '/sandwich' | '/username'
-  id: '__root__' | '/' | '/animation' | '/sandwich' | '/username'
+  to: '/' | '/animation' | '/sandwich' | '/username' | '/wallet'
+  id: '__root__' | '/' | '/animation' | '/sandwich' | '/username' | '/wallet'
   fileRoutesById: FileRoutesById
 }
 
@@ -115,6 +132,7 @@ export interface RootRouteChildren {
   AnimationRoute: typeof AnimationRoute
   SandwichRoute: typeof SandwichRoute
   UsernameRoute: typeof UsernameRoute
+  WalletRoute: typeof WalletRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -122,6 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnimationRoute: AnimationRoute,
   SandwichRoute: SandwichRoute,
   UsernameRoute: UsernameRoute,
+  WalletRoute: WalletRoute,
 }
 
 export const routeTree = rootRoute
@@ -137,7 +156,8 @@ export const routeTree = rootRoute
         "/",
         "/animation",
         "/sandwich",
-        "/username"
+        "/username",
+        "/wallet"
       ]
     },
     "/": {
@@ -151,6 +171,9 @@ export const routeTree = rootRoute
     },
     "/username": {
       "filePath": "username.tsx"
+    },
+    "/wallet": {
+      "filePath": "wallet.tsx"
     }
   }
 }

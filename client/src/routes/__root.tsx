@@ -14,6 +14,9 @@ export const Route = createRootRoute({
         <Link to="/animation" className="[&.active]:font-bold">
           animation
         </Link>
+        <Link to="/wallet" className="[&.active]:font-bold">
+          wallet
+        </Link>
       </div>
       <hr />
       <Outlet />
